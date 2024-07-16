@@ -3,12 +3,5 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
-    "module": "NodeNext",
-    "isolatedModules": true,
-    "declaration": false,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true
   },
 }

@@ -6,6 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.integer('client_id').unsigned().references('id').inTable('clients').onDelete('CASCADE')
       table
         .integer('product_id')
         .unsigned()
@@ -16,7 +17,8 @@ export default class extends BaseSchema {
       table.decimal('unit_price', 12, 2).notNullable()
       table.decimal('total_price', 12, 2).notNullable()
       table.timestamp('sale_date').notNullable()
-      table.timestamps(true, true)
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
     })
   }
 

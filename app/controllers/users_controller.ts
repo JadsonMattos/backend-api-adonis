@@ -1,22 +1,21 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { loginValidator, signupValidator } from '#validators/auth'
 import User from '#models/user'
 
 export default class UsersController {
-  async signup({ request, response }: HttpContext) {
-    const { email, password } = request.only(['email', 'password'])
-    // const data = await User.verifyCredentials(email, password)
+  async signup({ request, response }: HttpContext): Promise<void> {
+    const { email, password } = await request.validateUsing(signupValidator)
     const user = await User.create({ email, password })
     return response.status(201).json(user)
   }
 
-  async login({ request, response, auth }: any) {
-    const { email, password } = request.only(['email', 'password'])
-    try {
-      const token = await auth.use('api').attempt(email, password)
-      await auth.use('api').login(token)
-      response.redirect('/dashboard')
-    } catch {
-      return response.unauthorized('Invalid credentials')
-    }
+  async login({ request, response }: any) {
+    const { email, password } = request.validateUsing(loginValidator)
+    const user = await User.verifyCredentials(email, password)
+    const token = await User.accessTokens.create(user)
+    return response.ok({
+      token: token,
+      ...user.serialize(),
+    })
   }
 }

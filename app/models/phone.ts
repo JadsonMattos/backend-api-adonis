@@ -5,6 +5,12 @@ export default class Phone extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
+  @column()
+  declare clientId: number
+
+  @column()
+  declare number: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

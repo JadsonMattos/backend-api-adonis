@@ -1,44 +1,29 @@
 import { defineConfig } from '@adonisjs/auth'
-import { sessionUserProvider } from '@adonisjs/auth/session'
-import env from '#start/env'
-import { JwtGuard } from '../app/auth/guards/jwt.js'
-
-const jwtConfig = {
-  secret: env.get('APP_KEY'),
-}
-const userProvider = sessionUserProvider({
-  model: () => import('#models/user'),
-})
+import { tokensGuard, tokensUserProvider } from '@adonisjs/auth/access_tokens'
+import type { InferAuthEvents, Authenticators } from '@adonisjs/auth/types'
 
 const authConfig = defineConfig({
-  default: 'jwt',
+  default: 'api',
   guards: {
-    jwt: (ctx) => {
-      return new JwtGuard(ctx, userProvider, jwtConfig)
-    },
+    api: tokensGuard({
+      provider: tokensUserProvider({
+        tokens: 'accessTokens',
+        model: () => import('#models/user'),
+      }),
+    }),
   },
 })
 
 export default authConfig
 
-// import { Env } from '@adonisjs/core/env'
-
-// export default {
-//   guard: 'api',
-//   list: {
-//     api: {
-//       driver: 'jwt',
-//       tokenProvider: {
-//         type: 'api',
-//         driver: 'database',
-//         secret: Env.get('APP_KEY'),
-//       },
-//       provider: {
-//         driver: 'lucid',
-//         identifierKey: 'id',
-//         uids: ['email'],
-//         model: () => import('#models/user'),
-//       },
-//     },
-//   },
-// }
+/**
+ * Inferring types from the configured auth
+ * guards.
+ */
+declare module '@adonisjs/auth/types' {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  interface Authenticators extends InferAuthenticators<typeof authConfig> {}
+}
+declare module '@adonisjs/core/types' {
+  interface EventsList extends InferAuthEvents<Authenticators> {}
+}
