@@ -23,8 +23,8 @@ export default class Sale extends BaseModel {
   @column()
   declare totalPrice: number
 
-  @column.dateTime()
-  declare saleDate: DateTime
+  @column()
+  declare dateTime: DateTime
 
   @belongsTo(() => Client)
   declare client: BelongsTo<typeof Client>

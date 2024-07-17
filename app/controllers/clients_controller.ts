@@ -7,11 +7,11 @@ export default class ClientsController {
     return response.json(clients)
   }
 
-  async show({ params, response }: HttpContext) {
-    const client = await Client.findOrFail(params.id)
-    await client.load('sales', (query) => {
-      query.orderBy('created_at', 'desc')
-    })
+  async show({ params, request, response }: HttpContext) {
+    const { id } = params
+    const month = request.input('month')
+    const year = request.input('year')
+    const client = await Client.findClient(id, month, year)
     return response.json(client)
   }
 

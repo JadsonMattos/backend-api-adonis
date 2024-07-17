@@ -29,7 +29,7 @@ export default class Product extends BaseModel {
   declare updatedAt: DateTime
 
   static async listAll() {
-    return this.query().orderBy('name')
+    return this.query().where('isDeleted', false).orderBy('name')
   }
 
   static async createProduct(data: Partial<Product>) {

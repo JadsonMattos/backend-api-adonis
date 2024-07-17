@@ -11,8 +11,8 @@ export default class extends BaseSchema {
       table.string('city', 255).notNullable()
       table.string('state', 2).notNullable()
       table.string('zip_code', 8).notNullable()
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

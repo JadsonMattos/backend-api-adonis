@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import { HasMany } from '@adonisjs/lucid/types/relations'
 import Sale from '#models/sale'
+import Address from '#models/address'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
@@ -16,6 +17,9 @@ export default class Client extends BaseModel {
   @hasMany(() => Sale)
   declare sales: HasMany<typeof Sale>
 
+  @hasMany(() => Address)
+  declare addresses: HasMany<typeof Address>
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -24,6 +28,19 @@ export default class Client extends BaseModel {
 
   static async listAll() {
     return this.query().orderBy('id')
+  }
+
+  static async findClient(id: number, month?: number, year?: number) {
+    return this.query()
+      .where('id', id)
+      .preload('sales', (query) => {
+        query.orderBy('created_at', 'desc')
+        if (month && year) {
+          query.whereRaw('extract(month from created_at) = ?', [month])
+          query.whereRaw('extract(year from created_at) = ?', [year])
+        }
+      })
+      .firstOrFail()
   }
 
   static async createClient(data: Partial<Client>) {

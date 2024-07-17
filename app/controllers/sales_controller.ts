@@ -16,7 +16,7 @@ export default class SalesController {
       quantity,
       unitPrice: product.price,
       totalPrice,
-      saleDate: DateTime.local(),
+      dateTime: DateTime.local(),
     })
     return response.status(201).json(sale)
   }
