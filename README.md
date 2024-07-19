@@ -1,4 +1,4 @@
-# API RESTful AdonisJS 6 com autenticação JWTE + MYSQL
+# API RESTful AdonisJS 6 com autenticação JWT + MYSQL
 
 Este projeto é uma API RESTful construída com AdonisJS 6, apresentando signup, login, autenticação de usuário usando JWT, com bancco de dados MYSQL . A API também inclui endpoints para gerenciamento de clientes, produtos e vendas.
 
@@ -90,7 +90,7 @@ em seguida, continue a partir do passo 5.
 ```json
 {
     "email: "teste@teste.com",
-    "password": meSelecionaRecrutador!
+    "password": "meSelecionaRecrutador!"
 }
 ```
 
