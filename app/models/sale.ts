@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Client from '#models/client'
 import Product from '#models/product'
 
@@ -24,7 +24,7 @@ export default class Sale extends BaseModel {
   declare totalPrice: number
 
   @column()
-  declare dateTime: DateTime
+  declare dateTime: string
 
   @belongsTo(() => Client)
   declare client: BelongsTo<typeof Client>

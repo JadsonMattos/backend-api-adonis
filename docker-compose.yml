@@ -4,9 +4,9 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_DATABASE: 'adonis_api'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
