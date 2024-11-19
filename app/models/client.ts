@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
+import type { HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 import Sale from '#models/sale'
 import Address from '#models/address'
 
@@ -17,8 +17,8 @@ export default class Client extends BaseModel {
   @hasMany(() => Sale)
   declare sales: HasMany<typeof Sale>
 
-  @hasMany(() => Address)
-  declare addresses: HasMany<typeof Address>
+  @hasOne(() => Address)
+  declare addresses: HasOne<typeof Address>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -43,8 +43,16 @@ export default class Client extends BaseModel {
       .firstOrFail()
   }
 
-  static async createClient(data: Partial<Client>) {
-    return this.create(data)
+  static async createClient(name: string, cpf: string) {
+    const existingClient = await this.query().where('cpf', cpf).first()
+    if (existingClient) {
+      throw new Error('CPF already registered')
+    }
+    const client = new Client()
+    client.name = name
+    client.cpf = cpf
+    await client.save()
+    return client
   }
 
   static async updateClient(id: number, data: Partial<Client>) {
@@ -56,6 +64,9 @@ export default class Client extends BaseModel {
 
   static async deleteClient(id: number) {
     const client = await this.findOrFail(id)
+    if (!client) {
+      throw new Error('Not found')
+    }
     await client.delete()
   }
 }

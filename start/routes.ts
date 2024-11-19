@@ -16,6 +16,7 @@ const AuthController = () => import('#controllers/auth_controller')
 
 router.post('signup', [AuthController, 'signup'])
 router.post('login', [AuthController, 'login'])
+router.post('logout', [AuthController, 'logout'])
 
 router
   .get('/', async ({ auth }) => {

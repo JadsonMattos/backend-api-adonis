@@ -32,6 +32,10 @@ export default class Product extends BaseModel {
     return this.query().where('isDeleted', false).orderBy('name')
   }
 
+  static async findProduct(id: number) {
+    return this.query().where('id', id).andWhere('isDeleted', false).firstOrFail()
+  }
+
   static async createProduct(data: Partial<Product>) {
     return this.create(data)
   }

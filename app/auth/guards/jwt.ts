@@ -2,6 +2,7 @@ import { symbols, errors } from '@adonisjs/auth'
 import { AuthClientResponse, GuardContract } from '@adonisjs/auth/types'
 import jwt from 'jsonwebtoken'
 import type { HttpContext } from '@adonisjs/core/http'
+import BlacklistToken from '#models/blacklist'
 
 export type JwtGuardUser<RealUser> = {
   getId(): string | number | BigInt
@@ -62,6 +63,13 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
     const [, token] = authHeader.split('Bearer ')
     if (!token) {
       throw new errors.E_UNAUTHORIZED_ACCESS('Unauthorized access', {
+        guardDriverName: this.driverName,
+      })
+    }
+
+    const isBlacklisted = await BlacklistToken.query().where('token', token).first()
+    if (isBlacklisted) {
+      throw new errors.E_UNAUTHORIZED_ACCESS('Token is invalid', {
         guardDriverName: this.driverName,
       })
     }
