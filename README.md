@@ -75,7 +75,7 @@ npm run dev
 - Comando opcional se quiser resetar o banco de dados:
 
 ```bash
-node ace migration:roolback
+node ace migration:rollback
 ```
 
 em seguida, continue a partir do passo 5.
@@ -105,5 +105,22 @@ Authorization          Bearer lhdgaukshvkanva.fvhnakvbksfvak.vkajdnvk.asdbvkabdv
 - Por fim, agora você pode fazer um GET para / e irá retornar suas informações de usuário e somente assim você conseguirá fazer operações como GET, POST, PUT, DELETE, SOFTDELETE nas outras rotas.
 
 ---
+
+## Estrutura dos Requisitos + atributos adicionais + considerações
+
+1. A elaboração do projeto contém as seguintes rotas:
+    - /signup: cadastro de usuário
+    - /login: login com criação de autenticação JWT
+    - /clients: é possível listar dotos clientes cadastrados com dados principais, ordenação por ID, detalhes do cliente e vendas a ele atribuídos, as vendas mais recentes estão vindo primeiro, filtro de vendas por mês e ano, adicionar um novo cliente, atualizar um cliente, deletar um cliente, deletar um cliente.
+    - /products: lista todos produtos cadastrados, ordenação por nome, detalhes do produto, adicionar um novo produto, atualizar um produto, deletar um produto de forma suave.
+    - /sales: registra a venda de um produto a um cliente.
+
+2. Validações feitas com Vine, um validador de objetos para AdonisJS. Estruturas de autenticação personalizadas com JWT em relação com Adonis6. Middleware para proteger rotas. Robusteza do código com mais estruturas de validações e aperfeiçoamentos de try/catch.
+
+3. Atributos adicionais: rota de logout para deslogar o usuário, rota de softdelete para deletar um cliente de forma suave, rota de filtro de vendas por mês e ano, rota de vendas por cliente, rota de vendas por produto, rota de vendas por cliente e produto. Migration de blacklist para relembrar o token gerado e não permitir que ele seja usado novamente. Testes funcionais com japa.
+
+4. Considerações e propostas se tivesse mais tempo: Faria mais testes cobrindo todas as funcionalidades, e melhoraria a estrutura de validações para cada rota. Também iria implementar um sistema de recuperação de senha, implementar um sistema de envio de e-mails, implementar um sistema de notificações, implementar um sistema de cache, implementar um sistema de logs, implementar um sistema de auditoria, implementar um sistema de internacionalização, implementar um sistema de monitoramento, implementar um sistema de documentação, implementar um sistema de testes automatizados.
+
+5. Desafios: tive algumas dificuldades para ldiar com o blacklist criado em relação a testes e na estruturação do seeder. 
 
 **Ao não conseguir, sem problemas, me contrate para sua empresa.** :smile:
